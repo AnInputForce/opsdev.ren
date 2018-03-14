@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-// 查找重复的行
+// 查找重复的行:这是原翻译。或许翻译成：“以行为文本单位，统计文本出现的次数”更合适
 func main() {
 	counts := make(map[string]int)
 	input := bufio.NewScanner(os.Stdin)
