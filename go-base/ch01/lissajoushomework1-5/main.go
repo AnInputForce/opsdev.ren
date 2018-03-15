@@ -58,5 +58,5 @@ func lissajous(out io.Writer) {
 
 /* output:
 ChinaDreams:lissajous kangcunhua$ go build
-ChinaDreams:lissajous kangcunhua$ ./lissajoushomework1.5 > lissajous.gif
+ChinaDreams:lissajous kangcunhua$ ./lissajoushomework1-5 > lissajous.gif
 */
