@@ -1,0 +1,60 @@
+// lissajous 创造一个lissajous的git动画
+// 练习1.6 ：修改lissajous程序，修改其调色板来生成更丰富的颜色（简单完成）
+// 然后修改SetColorIndex的第三个参数，看看现实结果吧（实际结果，画面时有时无，不知是否正常）
+
+package main
+
+import (
+	"image"
+	"image/color"
+	"image/gif"
+	"io"
+	"math"
+	"math/rand"
+	"os"
+	"time"
+)
+
+var palette = []color.Color{color.White, color.RGBA{0xaa, 0xdd, 0x22, 0xff}}
+
+const (
+	whiteIndex = 0 // first color in palette
+	blackIndex = 1 // next color in pallette
+	greenIndex = 2 // next color in pallette
+
+)
+
+func main() {
+	rand.Seed(time.Now().UTC().UnixNano())
+	lissajous(os.Stdout)
+}
+
+func lissajous(out io.Writer) {
+	const (
+		cycles  = 5
+		res     = 0.001
+		size    = 100
+		nframes = 64
+		delay   = 8
+	)
+	freq := rand.Float64() * 3.0
+	anim := gif.GIF{LoopCount: nframes}
+	phase := 0.0
+	for i := 0; i < nframes; i++ {
+		rect := image.Rect(0, 0, 2*size+1, 2*size+1)
+		img := image.NewPaletted(rect, palette)
+		for t := 0.0; t < cycles*2*math.Pi; t += res {
+			x := math.Sin(t)
+			y := math.Sin(t*freq + phase)
+			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), greenIndex)
+		}
+		phase += 0.1
+		anim.Delay = append(anim.Delay, delay)
+		anim.Image = append(anim.Image, img)
+	}
+	gif.EncodeAll(out, &anim)
+}
+
+/* output:
+ChinaDreams:lissajous kangcunhua$ go build&&./lissajoushomework1-6 > lissajous.gif
+*/
